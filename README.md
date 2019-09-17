@@ -2,6 +2,8 @@
 
 generate the table of content from the Markdown file(s)
 
+<!-- md-toc -->
+
 # NAME
 
 `git-md-toc` - generate the table of content from the Markdown file(s)

@@ -2,7 +2,18 @@
 
 generate the table of content from the Markdown file(s)
 
-<!-- md-toc -->
+<!-- md-toc-begin -->
+# Table of Content
+* [git-markdown-toc](#git-markdown-toc)
+* [NAME](#name)
+* [SYNOPSIS](#synopsis)
+* [DESCRIPTION](#description)
+* [OPTIONS](#options)
+* [SEE ALSO](#see-also)
+  * [Syntax specification](#syntax-specification)
+  * [Perl implementations](#perl-implementations)
+  * [Some other implementations](#some-other-implementations)
+<!-- md-toc-end -->
 
 # NAME
 

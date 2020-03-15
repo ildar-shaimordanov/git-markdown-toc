@@ -57,6 +57,11 @@ value C<Table of Content> is assumed.
 Set the header level used for the TOC title. Available values are C<1>
 to C<6>. The default value is C<1>.
 
+=item B<-T> I<ENCODE>, B<--transcode>=I<ENCODE>
+
+Apply another encoding to each file. It should be specified explicitly to
+parse inputs in UTF-8 or other encodings.
+
 =item B<-u>, B<--update>
 
 Update the file with the new table of content. It works even when reading
@@ -109,6 +114,7 @@ my $toc_default_title = "Table of Content";
 my $toc_title;
 my $toc_level = 1;
 my $update;
+my $encode;
 
 exit 1 unless GetOptions(
 	"h|help"	=> sub {
@@ -121,6 +127,12 @@ exit 1 unless GetOptions(
 	"l|level=i"	=> sub {
 		( $toc_level = $_[1] ) =~ /^[1-6]$/
 		or die "Integer expected in range [1..6]\n";
+	},
+	"T|transcode=s"	=> sub {
+		use Encode;
+		Encode::find_encoding($_[1])
+		or die "Encoding not found: $_\n";
+		$encode = $_[1];
 	},
 	"u|update"	=> \$update,
 );
@@ -139,6 +151,7 @@ foreach ( @ARGV ) {
 	{
 		local $/;
 		open F, $_ or die "Unable to open for reading: $_: $!\n";
+		binmode F, ":encoding($encode)" if $encode;
 		$orig_text = <F>;
 		close F;
 	};
@@ -218,6 +231,7 @@ foreach ( @ARGV ) {
 	my $toc = join "\n", @toc;
 
 	unless ( $update ) {
+		binmode STDOUT, ":encoding($encode)" if $encode;
 		print "$toc\n";
 		next;
 	}
@@ -239,6 +253,7 @@ foreach ( @ARGV ) {
 	warn "Updating $_\n";
 
 	open F, ">$_" or die "Unable to open for writing: $_: $!\n";
+	binmode F, ":encoding($encode)" if $encode;
 	print F $orig_text;
 	close F;
 }

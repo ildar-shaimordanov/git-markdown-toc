@@ -172,6 +172,11 @@ foreach ( @ARGV ) {
 		(?=\n)
 	}{}msgx;
 
+	# skip other HTML comments because they could contain markdown within
+	$clean_text =~ s{
+		(?:\A|\n) [ \t]* <!-- \s+ .*? \s+ -->
+	}{}msgx;
+
 	my %count = ();
 
 	my @toc = ();

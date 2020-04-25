@@ -53,12 +53,27 @@ some text above, the double new line is prepended the TOC.
 
 * `-h`, `--help`
   Print this help and exit.
+
 * `-t TITLE`, `--title=TITLE`
   Set the title for the table of content. If not specified, the
   default value `Table of Content` is assumed.
+
 * `-l LEVEL`, `--level=LEVEL`
   Set the header level used for the TOC title. Available values are `1`
   to `6`. The default value is `1`.
+
+* `-T ENCODE`, `--transcode=ENCODE`
+  Apply another encoding to each file. It should be specified explicitly to
+  parse inputs in UTF-8 or other encodings.
+
+* `--title-transcode=ENCODE`
+  Apply another encoding to the title. If specified, it overwrites the
+  encoding specified with `-T`. It can be useful in DOS sessions for
+  setting another encoding for the title declared in the command line.
+
+  For example, to correctly set the title in Cyrillic in UTF8 encoded
+  files I needed to declare `cp1251` for the title encoding.
+
 * `-u`, `--update`
   Update the file with the new table of content. It works even when reading
   from STDIN. In this case the outcome will be printed to STDOUT.

@@ -146,6 +146,8 @@ my $md_toc		= "<!-- md-toc -->";
 my $md_toc_begin	= "<!-- md-toc-begin -->";
 my $md_toc_end		= "<!-- md-toc-end -->";
 
+$toc_title = decode($encode, $toc_title) if $encode && $toc_title;
+
 foreach ( @ARGV ) {
 	my $orig_text;
 	{

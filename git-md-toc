@@ -90,6 +90,8 @@ L<https://metacpan.org/pod/Text::Markdown>
 
 L<https://metacpan.org/pod/Text::MultiMarkdown>
 
+L<https://metacpan.org/pod/Markdown::TOC>
+
 =head2 Some other implementations
 
 L<https://github.com/ekalinin/github-markdown-toc>

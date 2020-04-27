@@ -88,6 +88,7 @@ some text above, the double new line is prepended the TOC.
 
 * https://metacpan.org/pod/Text::Markdown
 * https://metacpan.org/pod/Text::MultiMarkdown
+* https://metacpan.org/pod/Markdown::TOC
 
 ## Some other implementations
 

@@ -132,7 +132,7 @@ sub detect_encoding {
 	my $encode = shift;
 	use Encode;
 	Encode::find_encoding($encode)
-	or die "Encoding not found: $_\n";
+	or die "Encoding not found: $encode\n";
 	return $encode;
 }
 

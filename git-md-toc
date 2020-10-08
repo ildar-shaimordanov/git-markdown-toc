@@ -242,6 +242,15 @@ foreach ( @ARGV ) {
 
 		next unless $title;
 
+		# Remove markdown images
+		$title =~ s/\!\[.*?\]\(.*?\)//g;
+
+		# Remove markdown links
+		$title =~ s/\[(.*?)\]\(.*?\)/$1/g;
+
+		# Remove html tags
+		$title =~ s/<[^<>]*>//g;
+
 		$indent = "  " x $depth;
 
 		my $anchor = lc $title;

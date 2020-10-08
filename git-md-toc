@@ -261,6 +261,9 @@ foreach ( @ARGV ) {
 
 		$anchor .= ( 1 - $count{$anchor} or "" );
 
+		# Avoid empty text within links
+		$title =~ s/^\s*$/#/;
+
 		push @toc, "$indent* [$title](#$anchor)";
 	}
 

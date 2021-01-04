@@ -76,6 +76,15 @@ files I needed to declare C<cp1251> for the title encoding.
 Update the file with the new table of content. It works even when reading
 from STDIN. In this case the outcome will be printed to STDOUT.
 
+=item B<-c>, B<--create-before>
+
+=item B<-C>, B<--create-after>
+
+Create the TOC markers and add them before and/or after the input.
+
+Together the B<-u>/B<--update> option they allow to create and insert
+the TOCs from the scratch even if no any TOC markers not specified.
+
 =back
 
 =head1 SEE ALSO
@@ -124,6 +133,8 @@ my $toc_default_title = "Table of Content";
 my $toc_title;
 my $toc_level = 1;
 my $update;
+my $create_before;
+my $create_after;
 my $encode;
 my $title_encode;
 
@@ -154,6 +165,8 @@ exit 1 unless GetOptions(
 		$title_encode = detect_encoding($_[1]);
 	},
 	"u|update"	=> \$update,
+	"c|create-before"	=> \$create_before,
+	"C|create-after"	=> \$create_after,
 );
 
 # Hmm... No arguments. Let's take README.md or STDIN
@@ -186,14 +199,23 @@ foreach ( @ARGV ) {
 		(?:\A|\n) [ \t]* ``` .*? \n [ \t]* ```
 	}{}msgx;
 
-	# skip non-empty TOC blocks
+	# skip any TOC markers
 	$clean_text =~ s{
 		(?:\A|\n)
+		(?:
+		<!-- [ \t]+ md-toc       [ \t]+ --> [ \t\r]*
+		|
 		<!-- [ \t]+ md-toc-begin [ \t]+ --> [ \t\r]* \n
 		[\s\S]*? \n
 		<!-- [ \t]+ md-toc-end   [ \t]+ --> [ \t\r]*
+		)
 		(?=\n)
-	}{}msgx;
+	}{}msgx or do {
+		# no any TOCs
+		# create them if requested
+		$orig_text = "$md_toc\n$orig_text" if $create_before;
+		$orig_text = "$orig_text\n$md_toc" if $create_after;
+	};
 
 	# skip other HTML comments because they could contain markdown within
 	$clean_text =~ s{

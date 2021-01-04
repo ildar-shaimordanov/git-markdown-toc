@@ -80,7 +80,6 @@ some text above, the double new line is prepended the TOC.
 
 * `-c`, `--create-before`
 * `-C`, `--create-after`
-
   Create the TOC markers and add them before and/or after the input.
 
   Together the `-u`/`--update` option they allow to create and insert

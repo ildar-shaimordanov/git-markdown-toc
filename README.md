@@ -27,7 +27,7 @@ git-md-toc [OPTIONS]
 
 # DESCRIPTION
 
-Read and input and generate the table of content (TOC) based on the
+Read an input and generate the table of content (TOC) based on the
 markup of the file which is assumed Markdown formatted. The outcome is
 also formatted as Markdown.
 
@@ -55,8 +55,8 @@ some text above, the double new line is prepended the TOC.
   Print this help and exit.
 
 * `-t TITLE`, `--title=TITLE`
-  Set the title for the table of content. If not specified, the
-  default value `Table of Content` is assumed.
+  Set the title for the table of content. If not specified, the default
+  value `Table of Content` is assumed.
 
 * `-l LEVEL`, `--level=LEVEL`
   Set the header level used for the TOC title. Available values are `1`
@@ -77,6 +77,14 @@ some text above, the double new line is prepended the TOC.
 * `-u`, `--update`
   Update the file with the new table of content. It works even when reading
   from STDIN. In this case the outcome will be printed to STDOUT.
+
+* `-c`, `--create-before`
+* `-C`, `--create-after`
+
+  Create the TOC markers and add them before and/or after the input.
+
+  Together the `-u`/`--update` option they allow to create and insert
+  the TOCs from the scratch even if no any TOC markers not specified.
 
 # SEE ALSO
 

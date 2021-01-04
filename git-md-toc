@@ -10,7 +10,7 @@ git-md-toc - generate the table of content from the Markdown file(s)
 
 =head1 DESCRIPTION
 
-Read and input and generate the table of content (TOC) based on the
+Read an input and generate the table of content (TOC) based on the
 markup of the file which is assumed Markdown formatted. The outcome is
 also formatted as Markdown.
 
@@ -108,7 +108,7 @@ Ildar Shaimordanov E<lt>F<ildar.shaimordanov@gmail.com>E<gt>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2019, 2020 Ildar Shaimordanov. All rights reserved.
+Copyright (c) 2019-2021 Ildar Shaimordanov. All rights reserved.
 
   MIT License
 

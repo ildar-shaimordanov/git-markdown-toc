@@ -196,7 +196,7 @@ foreach ( @ARGV ) {
 
 	# skip code fencing
 	$clean_text =~ s{
-		(?:\A|\n) [ \t]* ``` .*? \n [ \t]* ```
+		(?:\A|\n) [ \t]* (```|~~~) .*? \n [ \t]* \1
 	}{}msgx;
 
 	# skip any TOC markers

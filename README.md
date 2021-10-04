@@ -31,8 +31,6 @@ Read an input and generate the table of content (TOC) based on the
 markup of the file which is assumed Markdown formatted. The outcome is
 also formatted as Markdown.
 
-If no file specified, the file `README.md` is assumed.
-
 The following HTML comments are recognized in a special way and handled
 as the markers to insert new TOC or update existing one.
 

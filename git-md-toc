@@ -14,8 +14,6 @@ Read an input and generate the table of content (TOC) based on the
 markup of the file which is assumed Markdown formatted. The outcome is
 also formatted as Markdown.
 
-If no file specified, the file C<README.md> is assumed.
-
 The following HTML comments are recognized in a special way and handled
 as the markers to insert new TOC or update existing one.
 
@@ -80,7 +78,7 @@ from STDIN. In this case the outcome will be printed to STDOUT.
 
 =item B<-C>, B<--create-after>
 
-Create the TOC markers and add them before and/or after the input.
+Create and add the TOCs before and/or after the input.
 
 Together the B<-u>/B<--update> option they allow to create and insert
 the TOCs from the scratch even if no any TOC markers not specified.
@@ -169,8 +167,8 @@ exit 1 unless GetOptions(
 	"C|create-after"	=> \$create_after,
 );
 
-# Hmm... No arguments. Let's take README.md or STDIN
-@ARGV or @ARGV = -t 0 ? "README.md" : "-";
+pod2usage({ -verbose => 2, -noperldoc => 1 }) if -t 0 && @ARGV == 0;
+@ARGV or @ARGV = "-";
 
 # =========================================================================
 
@@ -210,12 +208,7 @@ foreach ( @ARGV ) {
 		<!-- [ \t]+ md-toc-end   [ \t]+ --> [ \t\r]*
 		)
 		(?=\n)
-	}{}msgx or do {
-		# no any TOCs
-		# create them if requested
-		$orig_text = "$md_toc\n$orig_text" if $create_before;
-		$orig_text = "$orig_text\n$md_toc" if $create_after;
-	};
+	}{}msgx;
 
 	# skip other HTML comments because they could contain markdown within
 	$clean_text =~ s{
@@ -311,6 +304,10 @@ foreach ( @ARGV ) {
 	}{
 		( $1 // "\n\n" ) . $toc . "\n\n";
 	}emgx;
+
+	# create TOCs before or after the input if requested
+	$orig_text = "$toc\n\n$orig_text" if $create_before;
+	$orig_text = "$orig_text\n$toc\n" if $create_after;
 
 	warn "Updating $_\n";
 

@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-# this file is in cp866
-# encoding for title is cp866 as well
-
-perl "../git-md-toc" --title-transcode=cp866 -ut "[Сказки Пушкина]" -Tutf8 "utf8-cyrillic.md"

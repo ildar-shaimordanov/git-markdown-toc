@@ -172,9 +172,25 @@ pod2usage({ -verbose => 2, -noperldoc => 1 }) if -t 0 && @ARGV == 0;
 
 # =========================================================================
 
-my $md_toc		= "<!-- md-toc -->";
-my $md_toc_begin	= "<!-- md-toc-begin -->";
-my $md_toc_end		= "<!-- md-toc-end -->";
+my $name_toc		= "md-toc";
+my $name_toc_begin	= "md-toc-begin";
+my $name_toc_end	= "md-toc-end";
+
+my $tag_toc		= "<!-- $name_toc -->";
+my $tag_toc_begin	= "<!-- $name_toc_begin -->";
+my $tag_toc_end		= "<!-- $name_toc_end -->";
+
+my $re_toc = qr{
+	^
+	(?:
+		<!-- [ \t]+ $name_toc		[ \t]+ --> [ \t\r]*
+		|
+		<!-- [ \t]+ $name_toc_begin	[ \t]+ --> [ \t\r]* \n
+		(?: [\s\S]*? \n )*?
+		<!-- [ \t]+ $name_toc_end	[ \t]+ --> [ \t\r]*
+	)
+	$
+}msx;
 
 $title_encode ||= $encode;
 $toc_title = decode($title_encode, $toc_title)
@@ -198,17 +214,7 @@ foreach ( @ARGV ) {
 	}{}msgx;
 
 	# skip any TOC markers
-	$clean_text =~ s{
-		(?:\A|\n)
-		(?:
-		<!-- [ \t]+ md-toc       [ \t]+ --> [ \t\r]*
-		|
-		<!-- [ \t]+ md-toc-begin [ \t]+ --> [ \t\r]* \n
-		[\s\S]*? \n
-		<!-- [ \t]+ md-toc-end   [ \t]+ --> [ \t\r]*
-		)
-		(?=\n)
-	}{}msgx;
+	$clean_text =~ s/$re_toc//g;
 
 	# skip other HTML comments because they could contain markdown within
 	$clean_text =~ s{
@@ -219,7 +225,7 @@ foreach ( @ARGV ) {
 
 	my @toc = ();
 
-	push @toc, $md_toc_begin;
+	push @toc, $tag_toc_begin;
 	push @toc, "#" x $toc_level . " $toc_title" if $toc_title;
 
 	while ( $clean_text =~ m{
@@ -281,7 +287,7 @@ foreach ( @ARGV ) {
 		push @toc, "$indent* [$title](#$anchor)";
 	}
 
-	push @toc, $md_toc_end;
+	push @toc, $tag_toc_end;
 
 	my $toc = join "\n", @toc;
 
@@ -291,19 +297,7 @@ foreach ( @ARGV ) {
 		next;
 	}
 
-	$orig_text =~ s{
-		(?: (\A) | [\r\n]+ )
-		(?:
-			<!-- [ \t]+ md-toc [ \t]+ --> [ \t\r]*
-			|
-			<!-- [ \t]+ md-toc-begin [ \t]+ --> [ \t\r]* \n
-			(?: [\s\S]*? \n )*?
-			<!-- [ \t]+ md-toc-end   [ \t]+ --> [ \t\r]*
-		)
-		(?: (\Z) | [\r\n]+ )
-	}{
-		( $1 // "\n\n" ) . $toc . "\n\n";
-	}emgx;
+	$orig_text =~ s/$re_toc/$toc/g;
 
 	# create TOCs before or after the input if requested
 	$orig_text = "$toc\n\n$orig_text" if $create_before;

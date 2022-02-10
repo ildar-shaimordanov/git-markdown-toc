@@ -109,6 +109,8 @@ L<https://github.com/frnmst/md-toc>
 
 L<https://github.com/eGavr/toc-md>
 
+L<https://github.com/jonschlinkert/markdown-toc>
+
 =head1 AUTHORS
 
 Ildar Shaimordanov E<lt>F<ildar.shaimordanov@gmail.com>E<gt>
@@ -253,7 +255,6 @@ foreach ( @ARGV ) {
 			$title = $2;
 		} elsif ( $4 && $3 ) {
 			$depth = 0;
-			$indent = "";
 			$title = $3;
 		} elsif ( $6 && $5 ) {
 			$depth = 1;

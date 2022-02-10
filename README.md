@@ -1,10 +1,5 @@
-# git-markdown-toc
-
-generate the table of content from the Markdown file(s)
-
 <!-- md-toc-begin -->
 # Table of Content
-* [git-markdown-toc](#git-markdown-toc)
 * [NAME](#name)
 * [SYNOPSIS](#synopsis)
 * [DESCRIPTION](#description)
@@ -13,17 +8,17 @@ generate the table of content from the Markdown file(s)
   * [Syntax specification](#syntax-specification)
   * [Perl implementations](#perl-implementations)
   * [Some other implementations](#some-other-implementations)
+* [AUTHORS](#authors)
+* [COPYRIGHT](#copyright)
 <!-- md-toc-end -->
 
 # NAME
 
-`git-md-toc` - generate the table of content from the Markdown file(s)
+git-md-toc - generate the table of content from the Markdown file(s)
 
 # SYNOPSIS
 
-```
-git-md-toc [OPTIONS]
-```
+    git-md-toc [OPTIONS]
 
 # DESCRIPTION
 
@@ -34,10 +29,13 @@ also formatted as Markdown.
 The following HTML comments are recognized in a special way and handled
 as the markers to insert new TOC or update existing one.
 
-* `<!-- md-toc -->`
-  is used to point the place in the document where to put a new TOC.
-* `<!-- md-toc-begin -->`, `<!-- md-toc-end -->`
-  are used to point the beginning and end of the existing TOC.
+- `<!-- md-toc -->`
+
+    is used to point the place in the document where to put a new TOC.
+
+- `<!-- md-toc-begin -->`, `<!-- md-toc-end -->`
+
+    are used to point the beginning and end of the existing TOC.
 
 Be noticed that these markers themselves must be sticky to the left edge
 of the lines where they are situated. This rule doesn't spread on the
@@ -49,55 +47,78 @@ some text above, the double new line is prepended the TOC.
 
 # OPTIONS
 
-* `-h`, `--help`
-  Print this help and exit.
+- **-h**, **--help**
 
-* `-t TITLE`, `--title=TITLE`
-  Set the title for the table of content. If not specified, the default
-  value `Table of Content` is assumed.
+    Print this help and exit.
 
-* `-l LEVEL`, `--level=LEVEL`
-  Set the header level used for the TOC title. Available values are `1`
-  to `6`. The default value is `1`.
+- **-t** _TITLE_, **--title**=_TITLE_
 
-* `-T ENCODE`, `--transcode=ENCODE`
-  Apply another encoding to each file. It should be specified explicitly to
-  parse inputs in UTF-8 or other encodings.
+    Set the title for the table of content. If not specified, the default
+    value `Table of Content` is assumed.
 
-* `--title-transcode=ENCODE`
-  Apply another encoding to the title. If specified, it overwrites the
-  encoding specified with `-T`. It can be useful in DOS sessions for
-  setting another encoding for the title declared in the command line.
+- **-l** _LEVEL_, **--level**=_LEVEL_
 
-  For example, to correctly set the title in Cyrillic in UTF8 encoded
-  files I needed to declare `cp1251` for the title encoding.
+    Set the header level used for the TOC title. Available values are `1`
+    to `6`. The default value is `1`.
 
-* `-u`, `--update`
-  Update the file with the new table of content. It works even when reading
-  from STDIN. In this case the outcome will be printed to STDOUT.
+- **-d** _DEPTH_, **--depth**=_DEPTH_
 
-* `-c`, `--create-before`
-* `-C`, `--create-after`
-  Create the TOC markers and add them before and/or after the input.
+    Use `DEPTH` to control how many levels of headers to include in the
+    TOC. Available values are `1` to `6`. Defaults to `6`.
 
-  Together the `-u`/`--update` option they allow to create and insert
-  the TOCs from the scratch even if no any TOC markers not specified.
+- **-T** _ENCODE_, **--transcode**=_ENCODE_
+
+    Apply another encoding to each file. It should be specified explicitly to
+    parse inputs in UTF-8 or other encodings.
+
+- **--title-transcode**=_ENCODE_
+
+    Apply another encoding to the title. If specified, it overwrites the
+    encoding specified with **-T**. It can be useful in DOS sessions for
+    setting another encoding for the title declared in the command line.
+
+    For example, to correctly set the title in Cyrillic in UTF8 encoded
+    files I needed to declare `cp1251` for the title encoding.
+
+- **-u**, **--update**
+
+    Update the file with the new table of content. It works even when reading
+    from STDIN. In this case the outcome will be printed to STDOUT.
+
+- **-c**, **--create-before**
+- **-C**, **--create-after**
+
+    Create and add the TOCs before and/or after the input.
+
+    Together the **-u**/**--update** option they allow to create and insert
+    the TOCs from the scratch even if no any TOC markers not specified.
 
 # SEE ALSO
 
 ## Syntax specification
 
-* https://daringfireball.net/projects/markdown
+- [https://daringfireball.net/projects/markdown/](https://daringfireball.net/projects/markdown/)
 
 ## Perl implementations
 
-* https://metacpan.org/pod/Text::Markdown
-* https://metacpan.org/pod/Text::MultiMarkdown
-* https://metacpan.org/pod/Markdown::TOC
+- [https://metacpan.org/pod/Text::Markdown](https://metacpan.org/pod/Text::Markdown)
+- [https://metacpan.org/pod/Text::MultiMarkdown](https://metacpan.org/pod/Text::MultiMarkdown)
+- [https://metacpan.org/pod/Markdown::TOC](https://metacpan.org/pod/Markdown::TOC)
 
 ## Some other implementations
 
-* https://github.com/ekalinin/github-markdown-toc
-* https://github.com/ekalinin/github-markdown-toc.go
-* https://github.com/frnmst/md-toc
-* https://github.com/eGavr/toc-md
+- [https://github.com/ekalinin/github-markdown-toc](https://github.com/ekalinin/github-markdown-toc)
+- [https://github.com/ekalinin/github-markdown-toc.go](https://github.com/ekalinin/github-markdown-toc.go)
+- [https://github.com/frnmst/md-toc](https://github.com/frnmst/md-toc)
+- [https://github.com/eGavr/toc-md](https://github.com/eGavr/toc-md)
+- [https://github.com/jonschlinkert/markdown-toc](https://github.com/jonschlinkert/markdown-toc)
+
+# AUTHORS
+
+Ildar Shaimordanov <`ildar.shaimordanov@gmail.com`>
+
+# COPYRIGHT
+
+Copyright (c) 2019-2021 Ildar Shaimordanov. All rights reserved.
+
+    MIT License

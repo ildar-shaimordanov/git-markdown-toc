@@ -55,6 +55,11 @@ value C<Table of Content> is assumed.
 Set the header level used for the TOC title. Available values are C<1>
 to C<6>. The default value is C<1>.
 
+=item B<-d> I<DEPTH>, B<--depth>=I<DEPTH>
+
+Use C<DEPTH> to control how many levels of headers to include in the
+TOC. Available values are C<1> to C<6>. Defaults to C<6>.
+
 =item B<-T> I<ENCODE>, B<--transcode>=I<ENCODE>
 
 Apply another encoding to each file. It should be specified explicitly to
@@ -89,27 +94,39 @@ the TOCs from the scratch even if no any TOC markers not specified.
 
 =head2 Syntax specification
 
-L<https://daringfireball.net/projects/markdown/>
+=over 4
+
+=item L<https://daringfireball.net/projects/markdown/>
+
+=back
 
 =head2 Perl implementations
 
-L<https://metacpan.org/pod/Text::Markdown>
+=over 4
 
-L<https://metacpan.org/pod/Text::MultiMarkdown>
+=item L<https://metacpan.org/pod/Text::Markdown>
 
-L<https://metacpan.org/pod/Markdown::TOC>
+=item L<https://metacpan.org/pod/Text::MultiMarkdown>
+
+=item L<https://metacpan.org/pod/Markdown::TOC>
+
+=back
 
 =head2 Some other implementations
 
-L<https://github.com/ekalinin/github-markdown-toc>
+=over 4
 
-L<https://github.com/ekalinin/github-markdown-toc.go>
+=item L<https://github.com/ekalinin/github-markdown-toc>
 
-L<https://github.com/frnmst/md-toc>
+=item L<https://github.com/ekalinin/github-markdown-toc.go>
 
-L<https://github.com/eGavr/toc-md>
+=item L<https://github.com/frnmst/md-toc>
 
-L<https://github.com/jonschlinkert/markdown-toc>
+=item L<https://github.com/eGavr/toc-md>
+
+=item L<https://github.com/jonschlinkert/markdown-toc>
+
+=back
 
 =head1 AUTHORS
 
@@ -117,7 +134,7 @@ Ildar Shaimordanov E<lt>F<ildar.shaimordanov@gmail.com>E<gt>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2019-2021 Ildar Shaimordanov. All rights reserved.
+Copyright (c) 2019-2022 Ildar Shaimordanov. All rights reserved.
 
   MIT License
 
@@ -132,6 +149,7 @@ use Pod::Usage;
 my $toc_default_title = "Table of Content";
 my $toc_title;
 my $toc_level = 1;
+my $toc_depth = 6;
 my $update;
 my $create_before;
 my $create_after;
@@ -156,6 +174,10 @@ exit 1 unless GetOptions(
 	},
 	"l|level=i"	=> sub {
 		( $toc_level = $_[1] ) =~ /^[1-6]$/
+		or die "Integer expected in range [1..6]\n";
+	},
+	"d|depth=i"	=> sub {
+		( $toc_depth = $_[1] ) =~ /^[1-6]$/
 		or die "Integer expected in range [1..6]\n";
 	},
 	"T|transcode=s"	=> sub {
@@ -251,17 +273,18 @@ foreach ( @ARGV ) {
 		my $title;
 
 		if ( $1 && $2 ) {
-			$depth = length($1) - 1;
+			$depth = length($1);
 			$title = $2;
 		} elsif ( $4 && $3 ) {
-			$depth = 0;
+			$depth = 1;
 			$title = $3;
 		} elsif ( $6 && $5 ) {
-			$depth = 1;
+			$depth = 2;
 			$title = $5;
 		}
 
 		next unless $title;
+		next if $depth > $toc_depth;
 
 		# Remove markdown images
 		$title =~ s/\!\[.*?\]\(.*?\)//g;
@@ -272,7 +295,7 @@ foreach ( @ARGV ) {
 		# Remove html tags
 		$title =~ s/<[^<>]*>//g;
 
-		$indent = "  " x $depth;
+		$indent = "  " x ( $depth - 1 );
 
 		my $anchor = lc $title;
 		$anchor =~ s/\s/-/g;

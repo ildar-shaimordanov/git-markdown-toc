@@ -156,6 +156,13 @@ my $create_after;
 my $encode;
 my $title_encode;
 
+sub detect_int_range {
+	my $int = shift;
+	$int =~ /^[1-6]$/
+	or die "Out of range [1..6]: $int\n";
+	return $int;
+}
+
 sub detect_encoding {
 	my $encode = shift;
 	use Encode;
@@ -173,12 +180,10 @@ exit 1 unless GetOptions(
 		$toc_title = $_[1] || $toc_default_title;
 	},
 	"l|level=i"	=> sub {
-		( $toc_level = $_[1] ) =~ /^[1-6]$/
-		or die "Integer expected in range [1..6]\n";
+		$toc_level = detect_int_range($_[1]);
 	},
 	"d|depth=i"	=> sub {
-		( $toc_depth = $_[1] ) =~ /^[1-6]$/
-		or die "Integer expected in range [1..6]\n";
+		$toc_depth = detect_int_range($_[1]);
 	},
 	"T|transcode=s"	=> sub {
 		$encode = detect_encoding($_[1]);

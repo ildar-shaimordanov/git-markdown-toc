@@ -19,11 +19,11 @@ as the markers to insert new TOC or update existing one.
 
 =over 4
 
-=item C<< <!-- md-toc --> >>
+=item C<< <!-- toc --> >>
 
 is used to point the place in the document where to put a new TOC.
 
-=item C<< <!-- md-toc-begin --> >>, C<< <!-- md-toc-end --> >>
+=item C<< <!-- toc-begin --> >>, C<< <!-- toc-end --> >>
 
 are used to point the beginning and end of the existing TOC.
 
@@ -36,6 +36,14 @@ content within.
 The updated TOC is always ended with double new line to separate from
 the further text below. On the same reason, if the TOC is preceded with
 some text above, the double new line is prepended the TOC.
+
+=head2 Old-style markers
+
+Early, before 2022, another set of markers was used: C<md-toc>, C<md-toc-begin> and C<md-toc-end>.
+
+Currently they are considered obsolete and not recommended in use. However they are still supported but replaced with the newly ones when TOC is updated.
+
+Be noticed that you shouldn't mix old and new paired markers to designate the beginning and end of a the same TOC.
 
 =head1 OPTIONS
 
@@ -201,9 +209,9 @@ pod2usage({ -verbose => 2, -noperldoc => 1 }) if -t 0 && @ARGV == 0;
 
 # =========================================================================
 
-my $name_toc		= "md-toc";
-my $name_toc_begin	= "md-toc-begin";
-my $name_toc_end	= "md-toc-end";
+my $name_toc		= "toc";
+my $name_toc_begin	= "toc-begin";
+my $name_toc_end	= "toc-end";
 
 my $tag_toc		= "<!-- $name_toc -->";
 my $tag_toc_begin	= "<!-- $name_toc_begin -->";
@@ -212,11 +220,11 @@ my $tag_toc_end		= "<!-- $name_toc_end -->";
 my $re_toc = qr{
 	^
 	(?:
-		<!-- [ \t]+ $name_toc		[ \t]+ --> [ \t\r]*
+		<!-- [ \t]+ (?: md- )?	$name_toc	[ \t]+ --> [ \t\r]*
 		|
-		<!-- [ \t]+ $name_toc_begin	[ \t]+ --> [ \t\r]* \n
+		<!-- [ \t]+ ( md- | )?	$name_toc_begin	[ \t]+ --> [ \t\r]* \n
 		(?: [\s\S]*? \n )*?
-		<!-- [ \t]+ $name_toc_end	[ \t]+ --> [ \t\r]*
+		<!-- [ \t]+ \1		$name_toc_end	[ \t]+ --> [ \t\r]*
 	)
 	$
 }msx;

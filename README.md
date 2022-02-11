@@ -1,8 +1,9 @@
-<!-- md-toc-begin -->
+<!-- toc-begin -->
 # Table of Content
 * [NAME](#name)
 * [SYNOPSIS](#synopsis)
 * [DESCRIPTION](#description)
+  * [Old-style markers](#old-style-markers)
 * [OPTIONS](#options)
 * [SEE ALSO](#see-also)
   * [Syntax specification](#syntax-specification)
@@ -10,7 +11,7 @@
   * [Some other implementations](#some-other-implementations)
 * [AUTHORS](#authors)
 * [COPYRIGHT](#copyright)
-<!-- md-toc-end -->
+<!-- toc-end -->
 
 # NAME
 
@@ -29,11 +30,11 @@ also formatted as Markdown.
 The following HTML comments are recognized in a special way and handled
 as the markers to insert new TOC or update existing one.
 
-- `<!-- md-toc -->`
+- `<!-- toc -->`
 
     is used to point the place in the document where to put a new TOC.
 
-- `<!-- md-toc-begin -->`, `<!-- md-toc-end -->`
+- `<!-- toc-begin -->`, `<!-- toc-end -->`
 
     are used to point the beginning and end of the existing TOC.
 
@@ -44,6 +45,14 @@ content within.
 The updated TOC is always ended with double new line to separate from
 the further text below. On the same reason, if the TOC is preceded with
 some text above, the double new line is prepended the TOC.
+
+## Old-style markers
+
+Early, before 2022, another set of markers was used: `md-toc`, `md-toc-begin` and `md-toc-end`.
+
+Currently they are considered obsolete and not recommended in use. However they are still supported but replaced with the newly ones when TOC is updated.
+
+Be noticed that you shouldn't mix old and new paired markers to designate the beginning and end of a the same TOC.
 
 # OPTIONS
 

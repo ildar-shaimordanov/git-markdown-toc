@@ -119,6 +119,6 @@ Ildar Shaimordanov <`ildar.shaimordanov@gmail.com`>
 
 # COPYRIGHT
 
-Copyright (c) 2019-2021 Ildar Shaimordanov. All rights reserved.
+Copyright (c) 2019-2022 Ildar Shaimordanov. All rights reserved.
 
     MIT License

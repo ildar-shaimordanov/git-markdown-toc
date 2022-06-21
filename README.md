@@ -48,11 +48,15 @@ some text above, the double new line is prepended the TOC.
 
 ## Old-style markers
 
-Early, before 2022, another set of markers was used: `md-toc`, `md-toc-begin` and `md-toc-end`.
+Early, before 2022, another set of markers was used: `md-toc`,
+`md-toc-begin` and `md-toc-end`.
 
-Currently they are considered obsolete and not recommended in use. However they are still supported but replaced with the newly ones when TOC is updated.
+Currently they are considered obsolete and not recommended in use. However
+they are still supported but replaced with the newly ones when TOC
+is updated.
 
-Be noticed that you shouldn't mix old and new paired markers to designate the beginning and end of a the same TOC.
+Be noticed that you shouldn't mix old and new paired markers to designate
+the beginning and end of a the same TOC.
 
 # OPTIONS
 
@@ -101,6 +105,13 @@ Be noticed that you shouldn't mix old and new paired markers to designate the be
 
     Together the **-u**/**--update** option they allow to create and insert
     the TOCs from the scratch even if no any TOC markers not specified.
+
+- **--folding**=_collapse|expand_
+
+    Make TOC foldable. Two values `collapse` and `expand` are enabled.
+
+    When the document has many sections and TOC becomes correspondingly
+    quite big, it can be more friendly to make TOC foldable.
 
 # SEE ALSO
 

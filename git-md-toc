@@ -100,6 +100,13 @@ Create and add the TOCs before and/or after the input.
 Together the B<-u>/B<--update> option they allow to create and insert
 the TOCs from the scratch even if no any TOC markers not specified.
 
+=item B<--folding>=I<collapse|expand>
+
+Make TOC foldable. Two values C<collapse> and C<expand> are enabled.
+
+When the document has many sections and TOC becomes correspondingly
+quite big, it can be more friendly to make TOC foldable.
+
 =back
 
 =head1 SEE ALSO
@@ -167,6 +174,12 @@ my $create_before;
 my $create_after;
 my $encode;
 my $title_encode;
+my $tag_fold_types	= {
+	collapse	=> '<details>',
+	expand		=> '<details open>',
+};
+my $tag_fold_begin;
+my $tag_fold_end	= '</details>';
 
 sub detect_int_range {
 	my $int = shift;
@@ -206,6 +219,10 @@ exit 1 unless GetOptions(
 	"u|update"	=> \$update,
 	"c|create-before"	=> \$create_before,
 	"C|create-after"	=> \$create_after,
+	"folding=s"		=> sub {
+		$tag_fold_begin = $tag_fold_types->{ $_[1] }
+		or die "$_[0]: Only 'collapse' or 'expand' expected\n";
+	},
 );
 
 pod2usage({ -verbose => 2, -noperldoc => 1 }) if -t 0 && @ARGV == 0;
@@ -268,6 +285,11 @@ foreach ( @ARGV ) {
 
 	push @toc, $tag_toc_begin;
 	push @toc, "#" x $toc_level . " $toc_title" if $toc_title;
+	if ( $tag_fold_begin ) {
+		push @toc, $tag_fold_begin;
+		push @toc, "<summary>$toc_title</summary>" if $toc_title;
+		push @toc, ""; # required for splitting TOC and the container
+	}
 
 	while ( $clean_text =~ m{
 		(?:\A|\n)
@@ -328,6 +350,7 @@ foreach ( @ARGV ) {
 		push @toc, "$indent* [$title](#$anchor)";
 	}
 
+	push @toc, "\n$tag_fold_end" if $tag_fold_begin;
 	push @toc, $tag_toc_end;
 
 	my $toc = join "\n", @toc;

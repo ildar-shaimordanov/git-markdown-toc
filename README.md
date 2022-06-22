@@ -32,7 +32,7 @@ as the markers to insert new TOC or update existing one.
 
 - `<!-- toc -->`
 
-    is used to point the place in the document where to put a new TOC.
+    is used to point the place in the document for putting a new TOC.
 
 - `<!-- toc-begin -->`, `<!-- toc-end -->`
 
@@ -44,7 +44,7 @@ content within.
 
 The updated TOC is always ended with double new line to separate from
 the further text below. On the same reason, if the TOC is preceded with
-some text above, the double new line is prepended the TOC.
+some text above, the double new line is prepending the TOC.
 
 ## Old-style markers
 
@@ -52,11 +52,11 @@ Early, before 2022, another set of markers was used: `md-toc`,
 `md-toc-begin` and `md-toc-end`.
 
 Currently they are considered obsolete and not recommended in use. However
-they are still supported but replaced with the newly ones when TOC
+they are still supported but replaced with the newer ones when TOC
 is updated.
 
 Be noticed that you shouldn't mix old and new paired markers to designate
-the beginning and end of a the same TOC.
+the beginning and end of the same TOC.
 
 # OPTIONS
 
@@ -66,8 +66,8 @@ the beginning and end of a the same TOC.
 
 - **-t** _TITLE_, **--title**=_TITLE_
 
-    Set the title for the table of content. If not specified, the default
-    value `Table of Content` is assumed.
+    Specify the title for the TOC. If it is not specified or it's empty value,
+    the default value `Table of Content` is assumed.
 
 - **-l** _LEVEL_, **--level**=_LEVEL_
 
@@ -103,8 +103,8 @@ the beginning and end of a the same TOC.
 
     Create and add the TOCs before and/or after the input.
 
-    Together the **-u**/**--update** option they allow to create and insert
-    the TOCs from the scratch even if no any TOC markers not specified.
+    In combination with the **-u**/**--update** option they allow to create and
+    insert the TOCs from the scratch even if no any TOC marker is specified.
 
 - **--folding**=_collapse|expand_
 

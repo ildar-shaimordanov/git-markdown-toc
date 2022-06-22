@@ -21,7 +21,7 @@ as the markers to insert new TOC or update existing one.
 
 =item C<< <!-- toc --> >>
 
-is used to point the place in the document where to put a new TOC.
+is used to point the place in the document for putting a new TOC.
 
 =item C<< <!-- toc-begin --> >>, C<< <!-- toc-end --> >>
 
@@ -35,7 +35,7 @@ content within.
 
 The updated TOC is always ended with double new line to separate from
 the further text below. On the same reason, if the TOC is preceded with
-some text above, the double new line is prepended the TOC.
+some text above, the double new line is prepending the TOC.
 
 =head2 Old-style markers
 
@@ -43,11 +43,11 @@ Early, before 2022, another set of markers was used: C<md-toc>,
 C<md-toc-begin> and C<md-toc-end>.
 
 Currently they are considered obsolete and not recommended in use. However
-they are still supported but replaced with the newly ones when TOC
+they are still supported but replaced with the newer ones when TOC
 is updated.
 
 Be noticed that you shouldn't mix old and new paired markers to designate
-the beginning and end of a the same TOC.
+the beginning and end of the same TOC.
 
 =head1 OPTIONS
 
@@ -59,8 +59,9 @@ Print this help and exit.
 
 =item B<-t> I<TITLE>, B<--title>=I<TITLE>
 
-Set the title for the table of content. If not specified, the default
-value C<Table of Content> is assumed.
+Specify the title for the TOC. If it is not specified or it's empty value,
+the default value C<Table of Content> is assumed.
+
 
 =item B<-l> I<LEVEL>, B<--level>=I<LEVEL>
 
@@ -97,8 +98,8 @@ from STDIN. In this case the outcome will be printed to STDOUT.
 
 Create and add the TOCs before and/or after the input.
 
-Together the B<-u>/B<--update> option they allow to create and insert
-the TOCs from the scratch even if no any TOC markers not specified.
+In combination with the B<-u>/B<--update> option they allow to create and
+insert the TOCs from the scratch even if no any TOC marker is specified.
 
 =item B<--folding>=I<collapse|expand>
 

@@ -59,9 +59,8 @@ Print this help and exit.
 
 =item B<-t> I<TITLE>, B<--title>=I<TITLE>
 
-Specify the title for the TOC. If it is not specified or it's empty value,
-the default value C<Table of Content> is assumed.
-
+Specify the title for the TOC. If C<TITLE> is not specified or it's
+empty value, the default value C<Table of Content> is assumed.
 
 =item B<-l> I<LEVEL>, B<--level>=I<LEVEL>
 

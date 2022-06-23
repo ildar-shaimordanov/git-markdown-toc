@@ -66,8 +66,8 @@ the beginning and end of the same TOC.
 
 - **-t** _TITLE_, **--title**=_TITLE_
 
-    Specify the title for the TOC. If it is not specified or it's empty value,
-    the default value `Table of Content` is assumed.
+    Specify the title for the TOC. If `TITLE` is not specified or it's
+    empty value, the default value `Table of Content` is assumed.
 
 - **-l** _LEVEL_, **--level**=_LEVEL_
 

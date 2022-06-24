@@ -79,19 +79,28 @@ the beginning and end of the same TOC.
     Use `DEPTH` to control how many levels of headers to include in the
     TOC. Available values are `1` to `6`. Defaults to `6`.
 
-- **-T** _ENCODE_, **--transcode**=_ENCODE_
+- **-T** _TEXT\_ENCODE,TITLE\_ENCODE_, **--transcode**=_TEXT\_ENCODE,TITLE\_ENCODE_
 
-    Apply another encoding to each file. It should be specified explicitly to
-    parse inputs in UTF-8 or other encodings.
+    Point encodings for the file content or the TOC title. It should
+    be specified explicitly to correctly parse inputs in UTF-8 or other
+    encodings.
 
-- **--title-transcode**=_ENCODE_
+    The first value tells that both text and TOC title come in the particular
+    encoding.
 
-    Apply another encoding to the title. If specified, it overwrites the
-    encoding specified with **-T**. It can be useful in DOS sessions for
-    setting another encoding for the title declared in the command line.
+    The second value specifies encoding for the TOC title only. It can be
+    useful in DOS sessions for setting another encoding for the TOC title
+    declared in the command line. For example, to correctly set the TOC title
+    in Cyrillic in UTF8 encoded files I had to separately declare `cp1251`
+    for the TOC title encoding.
 
-    For example, to correctly set the title in Cyrillic in UTF8 encoded
-    files I needed to declare `cp1251` for the title encoding.
+- **--title-transcode**=_TITLE\_ENCODE_
+
+    Point another encoding for the TOC title. It works similarly as
+    `--transcode=,TITLE_ENCODE` (note the comma in the option).
+
+    This option is obsolete and kept for compatibility reasons. Use
+    **-T**/**--transcode** instead.
 
 - **-u**, **--update**
 

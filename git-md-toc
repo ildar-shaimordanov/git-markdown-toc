@@ -72,19 +72,28 @@ to C<6>. The default value is C<1>.
 Use C<DEPTH> to control how many levels of headers to include in the
 TOC. Available values are C<1> to C<6>. Defaults to C<6>.
 
-=item B<-T> I<ENCODE>, B<--transcode>=I<ENCODE>
+=item B<-T> I<TEXT_ENCODE,TITLE_ENCODE>, B<--transcode>=I<TEXT_ENCODE,TITLE_ENCODE>
 
-Apply another encoding to each file. It should be specified explicitly to
-parse inputs in UTF-8 or other encodings.
+Point encodings for the file content or the TOC title. It should
+be specified explicitly to correctly parse inputs in UTF-8 or other
+encodings.
 
-=item B<--title-transcode>=I<ENCODE>
+The first value tells that both text and TOC title come in the particular
+encoding.
 
-Apply another encoding to the title. If specified, it overwrites the
-encoding specified with B<-T>. It can be useful in DOS sessions for
-setting another encoding for the title declared in the command line.
+The second value specifies encoding for the TOC title only. It can be
+useful in DOS sessions for setting another encoding for the TOC title
+declared in the command line. For example, to correctly set the TOC title
+in Cyrillic in UTF8 encoded files I had to separately declare C<cp1251>
+for the TOC title encoding.
 
-For example, to correctly set the title in Cyrillic in UTF8 encoded
-files I needed to declare C<cp1251> for the title encoding.
+=item B<--title-transcode>=I<TITLE_ENCODE>
+
+Point another encoding for the TOC title. It works similarly as
+C<--transcode=,TITLE_ENCODE> (note the comma in the option).
+
+This option is obsolete and kept for compatibility reasons. Use
+B<-T>/B<--transcode> instead.
 
 =item B<-u>, B<--update>
 
@@ -218,7 +227,15 @@ exit 1 unless GetOptions(
 		$toc_depth = detect_int_range($_[1]);
 	},
 	"T|transcode=s"	=> sub {
-		$encode_text = detect_encoding($_[1]);
+		$_[1] =~ s/^\s+//;
+		$_[1] =~ s/\s+$//;
+		my @e = split ",", $_[1];
+
+		@e == 1 || @e == 2
+		or die "$_[0]: One or two comma-separated values expected\n";
+
+		$encode_text = detect_encoding(shift @e);
+		$encode_title = detect_encoding(shift @e);
 	},
 	"title-transcode=s"	=> sub {
 		$encode_title = detect_encoding($_[1]);

@@ -3,4 +3,4 @@
 # this file is in cp1251
 # encoding for title is cp1251 as well
 
-perl "../../git-md-toc" --title-transcode=cp1251 -ut "[Сказки Пушкина]" -Tutf8 < "utf8-cyrillic.md"
+perl "../../git-md-toc" -T utf8,cp1251 -ut "[Сказки Пушкина]" < "utf8-cyrillic.md"

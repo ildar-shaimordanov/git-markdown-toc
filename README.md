@@ -19,7 +19,7 @@ git-md-toc - generate the table of content from the Markdown file(s)
 
 # SYNOPSIS
 
-    git-md-toc [OPTIONS]
+    git-md-toc [OPTIONS] [FILE...]
 
 # DESCRIPTION
 

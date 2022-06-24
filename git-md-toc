@@ -6,7 +6,7 @@ git-md-toc - generate the table of content from the Markdown file(s)
 
 =head1 SYNOPSIS
 
-  git-md-toc [OPTIONS]
+  git-md-toc [OPTIONS] [FILE...]
 
 =head1 DESCRIPTION
 
@@ -188,6 +188,7 @@ my $tag_fold_types	= {
 	expand		=> '<details open>',
 };
 my $tag_fold_begin;
+my $tag_fold_summary	= "<summary>%s</summary>";
 my $tag_fold_end	= '</details>';
 
 sub detect_int_range {
@@ -234,7 +235,7 @@ exit 1 unless GetOptions(
 		@e == 1 || @e == 2
 		or die "$_[0]: One or two comma-separated values expected\n";
 
-		$encode_text = detect_encoding(shift @e);
+		$encode_text  = detect_encoding(shift @e);
 		$encode_title = detect_encoding(shift @e);
 	},
 	"title-transcode=s"	=> sub {
@@ -243,14 +244,14 @@ exit 1 unless GetOptions(
 	"u|update"	=> \$update,
 	"c|create-before"	=> \$create_before,
 	"C|create-after"	=> \$create_after,
-	"folding=s"		=> sub {
+	"folding=s"	=> sub {
 		$tag_fold_begin = $tag_fold_types->{ $_[1] }
 		or die "$_[0]: Only 'collapse' or 'expand' expected\n";
 	},
 );
 
 pod2usage({ -verbose => 2, -noperldoc => 1 }) if -t 0 && @ARGV == 0;
-@ARGV or @ARGV = "-";
+@ARGV = "-" unless @ARGV;
 
 # =========================================================================
 
@@ -310,7 +311,7 @@ foreach ( @ARGV ) {
 	push @toc, "#" x $toc_level . " $toc_title" if $toc_title;
 	if ( $tag_fold_begin ) {
 		push @toc, $tag_fold_begin;
-		push @toc, "<summary>$toc_title</summary>" if $toc_title;
+		push @toc, sprintf $tag_fold_summary, $toc_title if $toc_title;
 		push @toc, ""; # required for splitting TOC and the container
 	}
 

@@ -172,8 +172,8 @@ my $toc_depth = 6;
 my $update;
 my $create_before;
 my $create_after;
-my $encode;
-my $title_encode;
+my $encode_text;
+my $encode_title;
 my $tag_fold_types	= {
 	collapse	=> '<details>',
 	expand		=> '<details open>',
@@ -183,17 +183,22 @@ my $tag_fold_end	= '</details>';
 
 sub detect_int_range {
 	my $int = shift;
+
 	$int =~ /^[1-6]$/
 	or die "Out of range [1..6]: $int\n";
+
 	return $int;
 }
 
 sub detect_encoding {
-	my $encode = shift;
+	my $enc = shift;
+	return unless $enc;
+
 	use Encode;
-	Encode::find_encoding($encode)
-	or die "Encoding not found: $encode\n";
-	return $encode;
+	Encode::find_encoding($enc)
+	or die "Encoding not found: $enc\n";
+
+	return $enc;
 }
 
 exit 1 unless GetOptions(
@@ -202,6 +207,8 @@ exit 1 unless GetOptions(
 	},
 
 	"t|title:s"	=> sub {
+		$_[1] =~ s/^\s+//;
+		$_[1] =~ s/\s+$//;
 		$toc_title = $_[1] || $toc_default_title;
 	},
 	"l|level=i"	=> sub {
@@ -211,10 +218,10 @@ exit 1 unless GetOptions(
 		$toc_depth = detect_int_range($_[1]);
 	},
 	"T|transcode=s"	=> sub {
-		$encode = detect_encoding($_[1]);
+		$encode_text = detect_encoding($_[1]);
 	},
 	"title-transcode=s"	=> sub {
-		$title_encode = detect_encoding($_[1]);
+		$encode_title = detect_encoding($_[1]);
 	},
 	"u|update"	=> \$update,
 	"c|create-before"	=> \$create_before,
@@ -250,16 +257,15 @@ my $re_toc = qr{
 	$
 }msx;
 
-$title_encode ||= $encode;
-$toc_title = decode($title_encode, $toc_title)
-if $title_encode && $toc_title;
+$encode_title ||= $encode_text;
+$toc_title = decode($encode_title, $toc_title) if $encode_title && $toc_title;
 
 foreach ( @ARGV ) {
 	my $orig_text;
 	{
 		local $/;
 		open F, $_ or die "Unable to open for reading: $_: $!\n";
-		binmode F, ":encoding($encode)" if $encode;
+		binmode F, ":encoding($encode_text)" if $encode_text;
 		$orig_text = <F>;
 		close F;
 	};
@@ -356,7 +362,7 @@ foreach ( @ARGV ) {
 	my $toc = join "\n", @toc;
 
 	unless ( $update ) {
-		binmode STDOUT, ":encoding($encode)" if $encode;
+		binmode STDOUT, ":encoding($encode_text)" if $encode_text;
 		print "$toc\n";
 		next;
 	}
@@ -370,7 +376,7 @@ foreach ( @ARGV ) {
 	warn "Updating $_\n";
 
 	open F, ">$_" or die "Unable to open for writing: $_: $!\n";
-	binmode F, ":encoding($encode)" if $encode;
+	binmode F, ":encoding($encode_text)" if $encode_text;
 	print F $orig_text;
 	close F;
 }

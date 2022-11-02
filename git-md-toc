@@ -183,13 +183,12 @@ my $create_before;
 my $create_after;
 my $encode_text;
 my $encode_title;
+my $folding;
 my $tag_fold_types	= {
-	collapse	=> '<details>',
-	expand		=> '<details open>',
+	collapse	=> "<details>%s\n\n%s\n\n</details>",
+	expand		=> "<details open>%s\n\n%s\n\n</details>",
 };
-my $tag_fold_begin;
-my $tag_fold_summary	= "<summary>%s</summary>";
-my $tag_fold_end	= '</details>';
+my $tag_fold_summary = "<summary>%s</summary>";
 
 sub detect_int_range {
 	my $int = shift;
@@ -245,7 +244,7 @@ exit 1 unless GetOptions(
 	"c|create-before"	=> \$create_before,
 	"C|create-after"	=> \$create_after,
 	"folding=s"	=> sub {
-		$tag_fold_begin = $tag_fold_types->{ $_[1] }
+		$folding = $tag_fold_types->{ $_[1] }
 		or die "$_[0]: Only 'collapse' or 'expand' expected\n";
 	},
 );
@@ -307,14 +306,6 @@ foreach ( @ARGV ) {
 
 	my @toc = ();
 
-	push @toc, $tag_toc_begin;
-	push @toc, "#" x $toc_level . " $toc_title" if $toc_title;
-	if ( $tag_fold_begin ) {
-		push @toc, $tag_fold_begin;
-		push @toc, sprintf $tag_fold_summary, $toc_title if $toc_title;
-		push @toc, ""; # required for splitting TOC and the container
-	}
-
 	while ( $clean_text =~ m{
 		(?:\A|\n)
 		[ ]{0,3}
@@ -374,10 +365,17 @@ foreach ( @ARGV ) {
 		push @toc, "$indent* [$title](#$anchor)";
 	}
 
-	push @toc, "\n$tag_fold_end" if $tag_fold_begin;
-	push @toc, $tag_toc_end;
-
 	my $toc = join "\n", @toc;
+
+	$toc = sprintf $folding,
+		$toc_title ? sprintf $tag_fold_summary, $toc_title : '',
+		$toc
+		if $folding;
+
+	$toc = "#" x $toc_level . " $toc_title\n$toc"
+		if $toc_title;
+
+	$toc = "$tag_toc_begin\n$toc\n$tag_toc_end";
 
 	unless ( $update ) {
 		binmode STDOUT, ":encoding($encode_text)" if $encode_text;

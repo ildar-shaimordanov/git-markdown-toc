@@ -185,8 +185,8 @@ my $encode_text;
 my $encode_title;
 my $folding;
 my $tag_fold_types	= {
-	collapse	=> "<details>\n\n%s\n\n</details>",
-	expand		=> "<details open>\n\n%s\n\n</details>",
+	collapse	=> "<details>%s\n\n%s\n\n</details>",
+	expand		=> "<details open>%s\n\n%s\n\n</details>",
 };
 my $tag_fold_summary = "<summary>%s</summary>";
 
@@ -368,10 +368,9 @@ foreach ( @ARGV ) {
 	my $toc = join "\n", @toc;
 
 	if ( $folding ) {
-		$toc = sprintf $folding, $toc;
-		substr($toc, index($toc, '>') + 1, 0)
-			= sprintf $tag_fold_summary, $toc_title
-			if $toc_title;
+		$toc = sprintf $folding,
+			$toc_title ? sprintf $tag_fold_summary, $toc_title : '',
+			$toc;
 	}
 
 	$toc = "#" x $toc_level . " $toc_title\n$toc" if $toc_title;

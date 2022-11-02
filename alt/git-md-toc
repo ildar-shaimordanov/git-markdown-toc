@@ -367,13 +367,14 @@ foreach ( @ARGV ) {
 
 	my $toc = join "\n", @toc;
 
-	if ( $folding ) {
-		$toc = sprintf $folding,
-			$toc_title ? sprintf $tag_fold_summary, $toc_title : '',
-			$toc;
-	}
+	$toc = sprintf $folding,
+		$toc_title ? sprintf $tag_fold_summary, $toc_title : '',
+		$toc
+		if $folding;
 
-	$toc = "#" x $toc_level . " $toc_title\n$toc" if $toc_title;
+	$toc = "#" x $toc_level . " $toc_title\n$toc"
+		if $toc_title;
+
 	$toc = "$tag_toc_begin\n$toc\n$tag_toc_end";
 
 	unless ( $update ) {

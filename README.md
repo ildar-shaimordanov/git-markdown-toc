@@ -119,6 +119,8 @@ the beginning and end of the same TOC.
 
     Make TOC foldable. Two values `collapse` and `expand` are enabled.
 
+    If specified, the **-t**/**--title** option is implied.
+
     When the document has many sections and TOC becomes correspondingly
     quite big, it can be more friendly to make TOC foldable.
 

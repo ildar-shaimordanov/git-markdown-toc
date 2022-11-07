@@ -113,6 +113,8 @@ insert the TOCs from the scratch even if no any TOC marker is specified.
 
 Make TOC foldable. Two values C<collapse> and C<expand> are enabled.
 
+If specified, the B<-t>/B<--title> option is implied.
+
 When the document has many sections and TOC becomes correspondingly
 quite big, it can be more friendly to make TOC foldable.
 
@@ -184,11 +186,11 @@ my $create_after;
 my $encode_text;
 my $encode_title;
 my $folding;
-my $tag_fold_types	= {
-	collapse	=> "<details>%s\n\n%s\n\n</details>",
-	expand		=> "<details open>%s\n\n%s\n\n</details>",
+my $tag_fold = "<details%s><summary>\n\n%s\n\n</summary>\n\n%s\n\n</details>";
+my $tag_fold_types = {
+	collapse	=> "",
+	expand		=> " open",
 };
-my $tag_fold_summary = "<summary>%s</summary>";
 
 sub detect_int_range {
 	my $int = shift;
@@ -244,8 +246,10 @@ exit 1 unless GetOptions(
 	"c|create-before"	=> \$create_before,
 	"C|create-after"	=> \$create_after,
 	"folding=s"	=> sub {
-		$folding = $tag_fold_types->{ $_[1] }
-		or die "$_[0]: Only 'collapse' or 'expand' expected\n";
+		$toc_title ||= $toc_default_title;
+		$folding = $tag_fold_types->{ $_[1] };
+		die "$_[0]: Only 'collapse' or 'expand' expected\n"
+			unless defined $folding;
 	},
 );
 
@@ -367,13 +371,14 @@ foreach ( @ARGV ) {
 
 	my $toc = join "\n", @toc;
 
-	$toc = sprintf $folding,
-		$toc_title ? sprintf $tag_fold_summary, $toc_title : '',
-		$toc
-		if $folding;
-
-	$toc = "#" x $toc_level . " $toc_title\n$toc"
+	$toc_title = "#" x $toc_level . " $toc_title"
 		if $toc_title;
+
+	$toc = sprintf $tag_fold, $folding, $toc_title, $toc
+		if defined $folding;
+
+	$toc = "$toc_title\n$toc"
+		if $toc_title && ! defined $folding;
 
 	$toc = "$tag_toc_begin\n$toc\n$tag_toc_end";
 
